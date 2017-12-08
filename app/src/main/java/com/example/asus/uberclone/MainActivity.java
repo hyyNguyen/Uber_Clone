@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         dialog.setView(sign_layout);
-        dialog.setPositiveButton("REGISTER", new DialogInterface.OnClickListener() {
+        dialog.setPositiveButton("LOGIN", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -123,24 +123,26 @@ public class MainActivity extends AppCompatActivity {
                             .show();
                     return;
                 }
-            }
-        });
-        //login
 
-        auth.signInWithEmailAndPassword(edtEmail.getText().toString(),edtpassword.getText().toString())
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+//                login
+
+                auth.signInWithEmailAndPassword(edtEmail.getText().toString(),edtpassword.getText().toString())
+                        .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                            @Override
+                            public void onSuccess(AuthResult authResult) {
+                                startActivity(new Intent(MainActivity.this, welcome.class));
+                                finish();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onSuccess(AuthResult authResult) {
-                        startActivity(new Intent(MainActivity.this, welcome.class));
-                        finish();
+                    public void onFailure(@NonNull Exception e) {
+                        Snackbar.make(rootLayout,"Failed"+e.getMessage(),Snackbar.LENGTH_SHORT)
+                                .show();
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Snackbar.make(rootLayout,"Failed"+e.getMessage(),Snackbar.LENGTH_SHORT)
-                        .show();
+                });
             }
         });
+
 
         dialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
